@@ -3,21 +3,26 @@ import sys
 
 # TODO
 # Set the size of the tic tac toe board with two global variables
+height = 3
+width = 3
 
 
 # Dictionary mapping position numbers to board coordinates
 coords = {1: (0, 0), 2: (0, 1), 3: (0, 2), 4: (1, 0), 5: (1, 1), 6: (1, 2), 7: (2, 0), 8: (2, 1),9: (2, 2)}
+
 def new_board() -> list:
     """
     This function will create a new, blank, tic-tac-toe board, using
     a 2D array.
     """
 
-    # TODO 
-    # Create a tic-tac-toe board filled with empty spaces. Represent empty spaces with None. 
-    # Hint: Use the global board size variable.
-    pass
-
+    board = []
+    for row in range(height):
+        new_row = []
+        for columns in range(width):
+            new_row.append(None)
+        board.append(new_row)
+    return board
 
 def get_winner(board: list) -> str:
     """
@@ -30,6 +35,8 @@ def get_winner(board: list) -> str:
     """
 
     all_3_in_a_row = get_all_winning_lines()
+    
+
 
     # TODO
     # Check if our board contains any lines of three X's in a row or three O's in a row. 
@@ -38,6 +45,19 @@ def get_winner(board: list) -> str:
 
     # Return None if no winner is found
     return None
+
+
+
+          # Add diagonal from top left to bottom right
+            #     1 |  2 | 3
+            #    -----------
+            #     4 | 5 | 6
+            #    -----------
+            #     7 |  8  | 9
+
+    return cols + rows + diagonals
+
+
 
 
 def get_all_winning_lines() -> list:
@@ -59,11 +79,27 @@ def get_all_winning_lines() -> list:
     Returns:
         list: list of lists, where inner lists are a possible combination.
     """
-    all_winning_lines = []
+    all_winning_lines = [[1,4,7], [2,5,8], [3,6,9], [1,2,3], [4,5,6], [7,8,9], [1,5,9], [3,5,7]]
+        
 
     # TODO
-    # Append all possible combinations of three in a row to all_winning_lines
-    # Each combination of three positions should be in its own list.
+    # Create all_winning_lines using for loops.
+    # Don't worry about the diagonals
+    for all_winning_lines in range(0,8):
+        get_all_winning_lines(all_winning_lines)
+
+    cols = []
+    for width_pos in range(1, BOARD_WIDTH):
+        col = list(range(width_pos, BOARD_HEIGHT * BOARD_WIDTH, BOARD_WIDTH))
+        cols.append(col)
+
+    rows = []
+    for height_pos in range (1, BOARD_HEIGHT * BOARD_WIDTH, 3):
+        row = list(range(height_pos, height_pos + BOARD_WIDTH))
+    rows.append(row)
+
+
+    diagonals = [list(range(1,10, 4)), list(range(3,8,2))]
     
     return all_winning_lines
 
@@ -184,13 +220,14 @@ def play(p1_name, p2_name):
         ('O', p2_name),
     ]
 
+
     # Start a fresh game at 0 turns so far, and a new board
     turn_number = 0
     board = new_board()
 
     # Continue the game until a winner is found
     while True:
-        
+
         # Choose the player who is taking the turn
         current_player_symbol, current_player_name = players[turn_number % 2]
         render(board)
