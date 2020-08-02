@@ -25,6 +25,7 @@ def new_board() -> list:
     return board
 
 def get_winner(board: list) -> str:
+
     """
     This function will look at the board and check if a player has won. 
     If a player won, it returns the winning player's symbol. Otherwise, 
@@ -35,8 +36,40 @@ def get_winner(board: list) -> str:
     """
 
     all_3_in_a_row = get_all_winning_lines()
-    
+    for three_in_row in all_3_in_a_row:
+        line_values = []
+        for space in three_in_row:  
 
+            row = coords[space] [0]
+            column = coords[space][1]
+            line_values.append(board[row][column])
+            
+
+        if objects in set(line_values) == {"X"}:
+            return "X"
+        if objects in set(line_values) == {"O"}:
+            return "O"
+
+            #  OUR BOARD
+            #     None | O |  None
+            #       -----------
+            #     None | X |  None
+            #        -----------
+            #     None | X | None
+
+
+            #  POSITIONS OF THE BOARD
+            #     1 |  2 | 3
+            #    -----------
+            #      4 | 5 | 6
+            #    -----------
+            #     7 |  8  | 9
+        return None
+
+
+
+
+    
 
     # TODO
     # Check if our board contains any lines of three X's in a row or three O's in a row. 
@@ -70,7 +103,7 @@ def get_all_winning_lines() -> list:
     For the below board, one such combination is [1,5,9], this makes up the diagonal 
     from top left to bottom right.
 
-    1 | 2 | 3
+      | 2 | 3
     ---------
     4 | 5 | 6
     ---------
@@ -100,7 +133,7 @@ def get_all_winning_lines() -> list:
 
 
     diagonals = [list(range(1,10, 4)), list(range(3,8,2))]
-    
+
     return all_winning_lines
 
 
@@ -179,6 +212,10 @@ def is_board_full(board):
     # TODO 
     # Using a nested for loop, check all positions of the board to see if it is full.
     # Return the appropriate boolean.
+    # If it is full, return True. If it is not full, return False
+
+
+
 
 def get_move(board, current_player_symbol, current_player_name):
     """
@@ -224,10 +261,10 @@ def play(p1_name, p2_name):
     # Start a fresh game at 0 turns so far, and a new board
     turn_number = 0
     board = new_board()
+    no_winner = True
 
     # Continue the game until a winner is found
-    while True:
-
+    while no_winner:
         # Choose the player who is taking the turn
         current_player_symbol, current_player_name = players[turn_number % 2]
         render(board)
@@ -240,6 +277,7 @@ def play(p1_name, p2_name):
         winner = get_winner(board)
 
         if winner is not None:
+            no_winner = False
             render(board)
             print ("THE WINNER IS %s!" % winner)
             break
