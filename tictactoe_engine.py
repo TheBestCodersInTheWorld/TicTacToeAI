@@ -3,11 +3,12 @@ import sys
 
 # TODO
 # Set the size of the tic tac toe board with two global variables
-height = 3
-width = 3
+BOARD_HEIGHT = 3
+BOARD_WIDTH = 3
 
 
 # Dictionary mapping position numbers to board coordinates
+
 coords = {1: (0, 0), 2: (0, 1), 3: (0, 2), 4: (1, 0), 5: (1, 1), 6: (1, 2), 7: (2, 0), 8: (2, 1),9: (2, 2)}
 
 def new_board() -> list:
@@ -17,9 +18,9 @@ def new_board() -> list:
     """
 
     board = []
-    for row in range(height):
+    for row in range(BOARD_HEIGHT):
         new_row = []
-        for columns in range(width):
+        for columns in range(BOARD_WIDTH):
             new_row.append(None)
         board.append(new_row)
     return board
@@ -45,9 +46,9 @@ def get_winner(board: list) -> str:
             line_values.append(board[row][column])
             
 
-        if objects in set(line_values) == {"X"}:
+        if set(line_values) == {"X"}:
             return "X"
-        if objects in set(line_values) == {"O"}:
+        if set(line_values) == {"O"}:
             return "O"
 
             #  OUR BOARD
@@ -67,9 +68,6 @@ def get_winner(board: list) -> str:
         return None
 
 
-
-
-    
 
     # TODO
     # Check if our board contains any lines of three X's in a row or three O's in a row. 
@@ -118,8 +116,8 @@ def get_all_winning_lines() -> list:
     # TODO
     # Create all_winning_lines using for loops.
     # Don't worry about the diagonals
-    for all_winning_lines in range(0,8):
-        get_all_winning_lines(all_winning_lines)
+    # for all_winning_lines in range(0,8):
+    #     get_all_winning_lines()
 
     cols = []
     for width_pos in range(1, BOARD_WIDTH):
@@ -168,20 +166,29 @@ def render(board):
 
 
 
-def make_move(symbol, board, move_co_ords):
+def make_move(symbol, board, move_coords):
     """
     Places the symbol at the specified coordinates on the board.
 
     Args:
-        symbol (str): [description]
-        board (list): [description]
-        move_co_ords (tuple): [description]
+        symbol (str): the symbol we are placing, X or O
+        board (list): our board
+        move_coords (tuple): our move coordinates
+
+    From get_move
+        if board[position[0]][postition[1]] == None:
+
+      x |  | o
+    ---------
+    None | x | None
+    ---------
+    None | x | o
+
     """
-    valid_move = False
-    while not valid_move:
-        # TODO
-        # Use an if statement to check if the position is valid.
-        pass
+    board[move_coords[0]][move_coords[1]] = symbol
+
+    # TODO make the move.
+    
 
 def make_move_pos(symbol, board, position_num):
     """
@@ -208,12 +215,14 @@ def is_board_full(board):
 
     Returns:
         True if the board is full, False otherwise
-    """
-    # TODO 
-    # Using a nested for loop, check all positions of the board to see if it is full.
-    # Return the appropriate boolean.
-    # If it is full, return True. If it is not full, return False
 
+    """
+
+    for horizontal_row in board:
+        for vertical_column in horizontal_row:
+            if vertical_column == None:
+                return False
+    return True
 
 
 
@@ -224,23 +233,27 @@ def get_move(board, current_player_symbol, current_player_name):
     Args:
         board ([type]): [description]
         player_symbol ([type]): [description]
-    """
-    valid_move = False
-    while not valid_move:
-        try:
-            position = int(input(current_player_name + "'s turn. Choose a position to place a '" + current_player_symbol + "'"))
-            if board[coords[position][0]][coords[position][1]] != None:
-                print("That space isn't free")
-                continue
-            if position:
-                return coords[position]
-        except KeyboardInterrupt:
-            print ("\nBye")
-            sys.exit()
-        except:
-            print("The entered position must be a number between 1 and 9")
-            
 
+    x | None | o
+    ---------
+    None | x | None
+    ---------
+    None | x | o
+
+    coords[5]
+    Returns: the move coordinates for the chosen move    
+    """    
+    # "input(<message>)" will give us back whatever the player types in 
+
+    # position = (1,3)
+    # board[][]
+
+    space_number = int(input("type the position you want to place your piece:"))
+    position = coords[space_number]
+    if board[position[0]][position[1]] == None:
+        return position
+    else:
+        print("this spot is already taken")
 
 def play(p1_name, p2_name):
     """
