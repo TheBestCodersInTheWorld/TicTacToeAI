@@ -6,10 +6,53 @@ import sys
 BOARD_HEIGHT = 3
 BOARD_WIDTH = 3
 
-
 # Dictionary mapping position numbers to board coordinates
-
 coords = {1: (0, 0), 2: (0, 1), 3: (0, 2), 4: (1, 0), 5: (1, 1), 6: (1, 2), 7: (2, 0), 8: (2, 1),9: (2, 2)}
+
+def get_all_winning_lines() -> list:
+    """
+    This function will return all the combinatinos of positions on a tictactoe board
+    that can make a player win, meaning all possible positions that make up a line of three
+    filled boxes in a row.
+
+    example: 
+    For the below board, one such combination is [1,5,9], this makes up the diagonal 
+    from top left to bottom right.
+
+      | 2| 3
+    ---------
+    4 | 5 | 6
+    ---------
+    7 | 8 | 9
+
+    Returns:
+        list: list of lists, where inner lists are a possible combination.
+    """
+    all_winning_lines = [[1,4,7], [2,5,8], [3,6,9], [1,2,3], [4,5,6], [7,8,9], [1,5,9], [3,5,7]]
+        
+
+    # TODO
+    # Create all_winning_lines using for loops.
+    # Don't worry about the diagonals
+    # for all_winning_lines in range(0,8):
+    #     get_all_winning_lines()
+
+    cols = []
+    for width_pos in range(1, BOARD_WIDTH + 1):
+        col = list(range(width_pos, BOARD_HEIGHT * BOARD_WIDTH + 1, BOARD_WIDTH))
+        cols.append(col)
+
+    rows = []
+    for height_pos in range (1, BOARD_HEIGHT * BOARD_WIDTH, 3):
+        row = list(range(height_pos, height_pos + BOARD_WIDTH))
+        rows.append(row)
+
+
+    diagonals = [list(range(1,10, 4)), list(range(3,8,2))]
+
+    return all_winning_lines
+three_in_a_row = get_all_winning_lines()
+
 
 def new_board() -> list:
     """
@@ -36,8 +79,8 @@ def get_winner(board: list) -> str:
         board (list): The list that is the tic-tac-toe board
     """
 
-    all_3_in_a_row = get_all_winning_lines()
-    for three_in_row in all_3_in_a_row:
+
+    for three_in_row in three_in_a_row:
         line_values = []
         for space in three_in_row:  
 
@@ -89,52 +132,6 @@ def get_winner(board: list) -> str:
     return cols + rows + diagonals
 
 
-
-
-def get_all_winning_lines() -> list:
-    """
-    This function will return all the combinatinos of positions on a tictactoe board
-    that can make a player win, meaning all possible positions that make up a line of three
-    filled boxes in a row.
-
-    example: 
-    For the below board, one such combination is [1,5,9], this makes up the diagonal 
-    from top left to bottom right.
-
-      | 2 | 3
-    ---------
-    4 | 5 | 6
-    ---------
-    7 | 8 | 9
-
-    Returns:
-        list: list of lists, where inner lists are a possible combination.
-    """
-    all_winning_lines = [[1,4,7], [2,5,8], [3,6,9], [1,2,3], [4,5,6], [7,8,9], [1,5,9], [3,5,7]]
-        
-
-    # TODO
-    # Create all_winning_lines using for loops.
-    # Don't worry about the diagonals
-    # for all_winning_lines in range(0,8):
-    #     get_all_winning_lines()
-
-    cols = []
-    for width_pos in range(1, BOARD_WIDTH):
-        col = list(range(width_pos, BOARD_HEIGHT * BOARD_WIDTH, BOARD_WIDTH))
-        cols.append(col)
-
-    rows = []
-    for height_pos in range (1, BOARD_HEIGHT * BOARD_WIDTH, 3):
-        row = list(range(height_pos, height_pos + BOARD_WIDTH))
-    rows.append(row)
-
-
-    diagonals = [list(range(1,10, 4)), list(range(3,8,2))]
-
-    return all_winning_lines
-
-
 def render(board):
     """
     This function takes in the current board, and prints it to the command line so
@@ -143,11 +140,10 @@ def render(board):
     Args:
         board (list): The current tic tac toe board
     """
+
     rows = []
     for y in range(0, BOARD_HEIGHT):
-        row = []
-        for x in range(0, BOARD_WIDTH):
-            row.append(board[x][y])
+        row = list(board[y])
         rows.append(row)
     
     row_num = 0
