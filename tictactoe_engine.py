@@ -1,5 +1,6 @@
 import random
 import sys
+import minimax as minma
 
 # TODO
 # Set the size of the tic tac toe board with two global variables
@@ -243,13 +244,17 @@ def get_move(board, current_player_symbol, current_player_name):
 
     # position = (1,3)
     # board[][]
+    if current_player_name == "minima":
+        return minma.minimax_move(board, current_player_symbol)
 
-    space_number = int(input("type the position you want to place your piece:"))
-    position = coords[space_number]
-    if board[position[0]][position[1]] == None:
-        return position
-    else:
-        print("this spot is already taken")
+
+    else: 
+        space_number = int(input("type the position you want to place your piece:"))
+        position = coords[space_number]
+        if board[position[0]][position[1]] == None:
+            return position
+        else:
+            print("this spot is already taken")
 
 def play(p1_name, p2_name):
     """
@@ -273,7 +278,7 @@ def play(p1_name, p2_name):
     no_winner = True
 
     # Continue the game until a winner is found
-    while no_winner:
+    while True:
         # Choose the player who is taking the turn
         current_player_symbol, current_player_name = players[turn_number % 2]
         render(board)
